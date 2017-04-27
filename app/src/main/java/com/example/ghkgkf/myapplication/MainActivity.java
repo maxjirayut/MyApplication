@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -81,7 +82,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void checkUserAnPass() {
         try {
 
-            String urlJSON = "http://swiftcodingthai.com/cph/getDataJirayut.php";
+//            String urlJSON = "http://swiftcodingthai.com/cph/getDataJirayut.php";
+            String urlJSON = "http://swiftcodingthai.com/cph/getDataMaster.php";
             boolean b = true;
             String[] columnStrings = new String[]{"id", "Name", "User", "Password"};
             String[] loginStrings = new String[columnStrings.length];
@@ -106,6 +108,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
 
                 }
+            }
+
+
+            if (b) {
+                //User False
+                MyAlert myAlert = new MyAlert(MainActivity.this);
+                myAlert.myDialog("User False", "NO This User in my Database");
+
+            } else if (passwordString.equals(loginStrings[3])) { //โชว์บอกว่าชื่อไม่ภูกต้อง
+                Toast.makeText(MainActivity.this, "Wallcom" + loginStrings[1],
+                        Toast.LENGTH_SHORT).show();
+
+                Intent intent = new Intent(MainActivity.this, ServiceActivity.class); //ย้ายข้อมูลแบบเอาข้อมูอของบุคคลไปด้วย เป็นการline ไปหน้าต่อไป นะแจ๊ะๆ
+                intent.putExtra("Login", loginStrings); // โวยวาย
+                startActivity(intent); //เป็นการทำไม่ให้เข้าใช้งานได้หลายวัน
+                finish();
+
+            } else {
+                MyAlert myAlert = new MyAlert(MainActivity.this);
+                myAlert.myDialog("Password False", "Please Try Again Password False");
+
             }
 
         } catch (Exception e) {
