@@ -61,8 +61,9 @@ public class ServiceActivity extends AppCompatActivity {
                 qrCodeStrings[i] = jsonObject.getString("QR_code");
 
             }
-
-
+            MyAdapter myAdapter = new MyAdapter(ServiceActivity.this, nameStrings,
+                    dateStrings, detaStrings);
+            listView.setAdapter(myAdapter);
 
         } catch (Exception e) {
             Log.d(tag, "e createListView ==> " + e.toString());
