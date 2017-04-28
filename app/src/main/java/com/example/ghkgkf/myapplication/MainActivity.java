@@ -1,8 +1,8 @@
 package com.example.ghkgkf.myapplication;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -15,7 +15,7 @@ import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    // Explicit
+    //Explicit
     private EditText userEditText, passwordEditText;
     private TextView textView;
     private Button button;
@@ -26,10 +26,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //Initial view พูกตัวแปล
+        //Initial View
         initialView();
 
-        //Controller ทำให้วิวสามารคริกได้
+        //Controller
         controller();
 
     }   // Main Method
@@ -48,18 +48,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     @Override
-    public void onClick(View v) {
+    public void onClick(View view) {
 
         //For TextView
-        if (v == textView) {
-            // intent to SignUp
+        if (view == textView) {
+            //Intent to SignUp
             Intent intent = new Intent(MainActivity.this, SignUpActivity.class);
             startActivity(intent);
         }
 
-        //For button
-        if (v == button) {
-            // Get Value From EditText
+        //For Button
+        if (view == button) {
+
+            //Get Value From EditText
             userString = userEditText.getText().toString().trim();
             passwordString = passwordEditText.getText().toString().trim();
 
@@ -72,8 +73,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             } else {
                 //No Space
                 checkUserAnPass();
-
             }
+
+
 
         }
 
@@ -82,13 +84,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void checkUserAnPass() {
         try {
 
-//            String urlJSON = "http://swiftcodingthai.com/cph/getDataJirayut.php";
+//            String urlJSON = "http://swiftcodingthai.com/cph/getDataMaster.php";
             String urlJSON = "http://swiftcodingthai.com/cph/getDataMaster.php";
             boolean b = true;
             String[] columnStrings = new String[]{"id", "Name", "User", "Password"};
             String[] loginStrings = new String[columnStrings.length];
-
-
 
             GetData getData = new GetData(MainActivity.this);
             getData.execute(urlJSON);
@@ -99,7 +99,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
-
                 if (userString.equals(jsonObject.getString(columnStrings[2]))) {
                     b = false;
                     for (int i1=0;i1<columnStrings.length;i1++) {
@@ -112,27 +111,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
             if (b) {
-                //User False
+                // User False
                 MyAlert myAlert = new MyAlert(MainActivity.this);
-                myAlert.myDialog("User False", "NO This User in my Database");
+                myAlert.myDialog("User False", "No This User in my Database");
 
-            } else if (passwordString.equals(loginStrings[3])) { //โชว์บอกว่าชื่อไม่ภูกต้อง
-                Toast.makeText(MainActivity.this, "Wallcom" + loginStrings[1],
+            } else if (passwordString.equals(loginStrings[3])) {
+                Toast.makeText(MainActivity.this, "Welcome " + loginStrings[1],
                         Toast.LENGTH_SHORT).show();
 
-                Intent intent = new Intent(MainActivity.this, ServiceActivity.class); //ย้ายข้อมูลแบบเอาข้อมูอของบุคคลไปด้วย เป็นการline ไปหน้าต่อไป นะแจ๊ะๆ
-                intent.putExtra("Login", loginStrings); // โวยวาย
-                startActivity(intent); //เป็นการทำไม่ให้เข้าใช้งานได้หลายวัน
+                Intent intent = new Intent(MainActivity.this, ServiceActivity.class);
+                intent.putExtra("Login", loginStrings);
+                startActivity(intent);
                 finish();
 
             } else {
                 MyAlert myAlert = new MyAlert(MainActivity.this);
                 myAlert.myDialog("Password False", "Please Try Again Password False");
-
             }
+
 
         } catch (Exception e) {
             Log.d("27AprilV1", "e checkUser ==> " + e.toString());
         }
     }
-}   // Main Class นี้คือคาสหลัก นะจ้ะ
+
+}   // Main Class นี่คือ คลาสหลัก เว้ยเห้ย
